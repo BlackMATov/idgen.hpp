@@ -7,7 +7,7 @@
 #define CATCH_CONFIG_FAST_COMPILE
 #include <catch2/catch.hpp>
 
-#include <idgen.hpp/idgen.hpp>
+#include <idgen.hpp/idgen_id.hpp>
 namespace idgen = idgen_hpp;
 
 namespace

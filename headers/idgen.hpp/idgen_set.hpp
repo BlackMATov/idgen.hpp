@@ -15,7 +15,7 @@
 #include <utility>
 #include <vector>
 
-#include "idgen.hpp"
+#include "idgen_id.hpp"
 #include "detail/idgen_utility.hpp"
 
 namespace idgen_hpp
@@ -30,6 +30,12 @@ namespace idgen_hpp
         using value_type = id_type;
     public:
         basic_id_set() = default;
+
+        basic_id_set(basic_id_set&& other) = default;
+        basic_id_set& operator=(basic_id_set&& other) = default;
+
+        basic_id_set(const basic_id_set& other) = default;
+        basic_id_set& operator=(const basic_id_set& other) = default;
 
         basic_id_set(std::initializer_list<value_type> init) {
             insert(init);

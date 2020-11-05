@@ -28,6 +28,83 @@ TEST_CASE("idgen_set")
             id8_set s{id8(1), id8(2), id8(3)};
             REQUIRE_FALSE(s.empty());
             REQUIRE(s.size() == 3u);
+            REQUIRE(s.contains(id8(1)));
+            REQUIRE(s.contains(id8(2)));
+            REQUIRE(s.contains(id8(3)));
+        }
+        {
+            std::vector<id8> v{id8(1), id8(2), id8(3)};
+            id8_set s(v.begin(), v.end());
+            REQUIRE_FALSE(s.empty());
+            REQUIRE(s.size() == 3u);
+            REQUIRE(s.contains(id8(1)));
+            REQUIRE(s.contains(id8(2)));
+            REQUIRE(s.contains(id8(3)));
+        }
+        {
+            id8_set s1{id8(1), id8(2), id8(3)};
+            id8_set s2 = s1;
+
+            REQUIRE_FALSE(s1.empty());
+            REQUIRE(s1.size() == 3u);
+            REQUIRE(s1.contains(id8(1)));
+            REQUIRE(s1.contains(id8(2)));
+            REQUIRE(s1.contains(id8(3)));
+
+            REQUIRE_FALSE(s2.empty());
+            REQUIRE(s2.size() == 3u);
+            REQUIRE(s2.contains(id8(1)));
+            REQUIRE(s2.contains(id8(2)));
+            REQUIRE(s2.contains(id8(3)));
+        }
+        {
+            id8_set s1{id8(1), id8(2), id8(3)};
+            id8_set s2 = std::move(s1);
+
+            REQUIRE(s1.empty());
+            REQUIRE(s1.size() == 0u);
+
+            REQUIRE_FALSE(s2.empty());
+            REQUIRE(s2.size() == 3u);
+            REQUIRE(s2.contains(id8(1)));
+            REQUIRE(s2.contains(id8(2)));
+            REQUIRE(s2.contains(id8(3)));
+        }
+    }
+
+    SECTION("operator=") {
+        using id8 = idgen::id8<struct untagged>;
+        using id8_set = idgen::id8_set<struct untagged>;
+        {
+            id8_set s1{id8(1), id8(2), id8(3)};
+            id8_set s2;
+            s2 = s1;
+
+            REQUIRE_FALSE(s1.empty());
+            REQUIRE(s1.size() == 3u);
+            REQUIRE(s1.contains(id8(1)));
+            REQUIRE(s1.contains(id8(2)));
+            REQUIRE(s1.contains(id8(3)));
+
+            REQUIRE_FALSE(s2.empty());
+            REQUIRE(s2.size() == 3u);
+            REQUIRE(s2.contains(id8(1)));
+            REQUIRE(s2.contains(id8(2)));
+            REQUIRE(s2.contains(id8(3)));
+        }
+        {
+            id8_set s1{id8(1), id8(2), id8(3)};
+            id8_set s2;
+            s2 = std::move(s1);
+
+            REQUIRE(s1.empty());
+            REQUIRE(s1.size() == 0u);
+
+            REQUIRE_FALSE(s2.empty());
+            REQUIRE(s2.size() == 3u);
+            REQUIRE(s2.contains(id8(1)));
+            REQUIRE(s2.contains(id8(2)));
+            REQUIRE(s2.contains(id8(3)));
         }
     }
 
