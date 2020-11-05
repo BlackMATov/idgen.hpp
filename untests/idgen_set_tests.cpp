@@ -10,10 +10,6 @@
 #include <idgen.hpp/idgen_set.hpp>
 namespace idgen = idgen_hpp;
 
-namespace
-{
-}
-
 TEST_CASE("idgen_set")
 {
     SECTION("ctor") {

@@ -10,6 +10,10 @@
 #include <cstddef>
 #include <cstdint>
 
+#include <utility>
+
+#include "idgen_utility.hpp"
+
 namespace idgen_hpp
 {
     template < typename Value >
@@ -49,7 +53,7 @@ namespace idgen_hpp
     template < typename Tag
              , typename Value
              , typename Traits = id_value_traits<Value> >
-    class basic_id {
+    class id {
     public:
         using tag_type = Tag;
         using value_type = Value;
@@ -61,14 +65,14 @@ namespace idgen_hpp
         static constexpr value_type index_mask = (value_type(1) << index_bits) - value_type(1);
         static constexpr value_type version_mask = (value_type(1) << version_bits) - value_type(1);
     public:
-        basic_id() = default;
+        id() = default;
 
-        explicit basic_id(value_type index)
+        explicit id(value_type index)
         : value_(index & index_mask) {
             assert(index <= index_mask);
         }
 
-        basic_id(value_type index, value_type version)
+        id(value_type index, value_type version)
         : value_((index & index_mask) | ((version & version_mask) << index_bits)) {
             assert(index <= index_mask);
             assert(version <= version_mask);
@@ -93,37 +97,64 @@ namespace idgen_hpp
 namespace idgen_hpp
 {
     template < typename Tag, typename Value, typename Traits >
-    bool operator<(basic_id<Tag, Value, Traits> l, basic_id<Tag, Value, Traits> r) noexcept {
+    bool operator<(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() < r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator<=(basic_id<Tag, Value, Traits> l, basic_id<Tag, Value, Traits> r) noexcept {
+    bool operator<=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() <= r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator==(basic_id<Tag, Value, Traits> l, basic_id<Tag, Value, Traits> r) noexcept {
+    bool operator==(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() == r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator!=(basic_id<Tag, Value, Traits> l, basic_id<Tag, Value, Traits> r) noexcept {
+    bool operator!=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() != r.value();
     }
 }
 
 namespace idgen_hpp
 {
+    template < typename Tag, typename Value, typename Traits >
+    class index<id<Tag, Value, Traits>> {
+        using id_type = idgen_hpp::id<Tag, Value, Traits>;
+    public:
+        static_assert(
+            Traits::index_bits >= 0 &&
+            Traits::index_bits <= sizeof(std::size_t) * 8u);
+        std::size_t operator()(const id_type& id) const noexcept {
+            return static_cast<std::size_t>(id.index());
+        }
+    };
+}
+
+namespace std
+{
+    template < typename Tag, typename Value, typename Traits >
+    class hash<idgen_hpp::id<Tag, Value, Traits>> {
+        using id_type = idgen_hpp::id<Tag, Value, Traits>;
+    public:
+        std::size_t operator()(const id_type& id) const noexcept {
+            return hash<typename id_type::value_type>()(id.value());
+        }
+    };
+}
+
+namespace idgen_hpp
+{
     template < typename Tag >
-    using id8 = basic_id<Tag, std::uint8_t>;
+    using id8 = id<Tag, std::uint8_t>;
 
     template < typename Tag >
-    using id16 = basic_id<Tag, std::uint16_t>;
+    using id16 = id<Tag, std::uint16_t>;
 
     template < typename Tag >
-    using id32 = basic_id<Tag, std::uint32_t>;
+    using id32 = id<Tag, std::uint32_t>;
 
     template < typename Tag >
-    using id64 = basic_id<Tag, std::uint64_t>;
+    using id64 = id<Tag, std::uint64_t>;
 }

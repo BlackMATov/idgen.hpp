@@ -23,26 +23,26 @@ namespace idgen_hpp
     template < typename Tag
              , typename Key
              , typename Traits = id_value_traits<Key> >
-    class basic_id_set {
+    class id_set {
     public:
-        using id_type = basic_id<Tag, Key, Traits>;
+        using id_type = id<Tag, Key, Traits>;
         using key_type = id_type;
         using value_type = id_type;
     public:
-        basic_id_set() = default;
+        id_set() = default;
 
-        basic_id_set(basic_id_set&& other) = default;
-        basic_id_set& operator=(basic_id_set&& other) = default;
+        id_set(id_set&& other) = default;
+        id_set& operator=(id_set&& other) = default;
 
-        basic_id_set(const basic_id_set& other) = default;
-        basic_id_set& operator=(const basic_id_set& other) = default;
+        id_set(const id_set& other) = default;
+        id_set& operator=(const id_set& other) = default;
 
-        basic_id_set(std::initializer_list<value_type> init) {
+        id_set(std::initializer_list<value_type> init) {
             insert(init);
         }
 
         template < typename InputIterator >
-        basic_id_set(InputIterator first, InputIterator last) {
+        id_set(InputIterator first, InputIterator last) {
             insert(first, last);
         }
 
@@ -105,7 +105,7 @@ namespace idgen_hpp
             return 1u;
         }
 
-        void swap(basic_id_set& other) noexcept {
+        void swap(id_set& other) noexcept {
             using std::swap;
             swap(dense_, other.dense_);
             swap(sparse_, other.sparse_);
@@ -125,11 +125,12 @@ namespace idgen_hpp
         std::vector<value_type> dense_;
         std::vector<std::size_t> sparse_;
     };
+}
 
+namespace idgen_hpp
+{
     template < typename Tag, typename Key, typename Traits >
-    void swap(
-        basic_id_set<Tag, Key, Traits>& l,
-        basic_id_set<Tag, Key, Traits>& r)
+    void swap(id_set<Tag, Key, Traits>& l, id_set<Tag, Key, Traits>& r)
         noexcept(noexcept(l.swap(r)))
     {
         l.swap(r);
@@ -139,14 +140,14 @@ namespace idgen_hpp
 namespace idgen_hpp
 {
     template < typename Tag >
-    using id8_set = basic_id_set<Tag, std::uint8_t>;
+    using id8_set = id_set<Tag, std::uint8_t>;
 
     template < typename Tag >
-    using id16_set = basic_id_set<Tag, std::uint16_t>;
+    using id16_set = id_set<Tag, std::uint16_t>;
 
     template < typename Tag >
-    using id32_set = basic_id_set<Tag, std::uint32_t>;
+    using id32_set = id_set<Tag, std::uint32_t>;
 
     template < typename Tag >
-    using id64_set = basic_id_set<Tag, std::uint64_t>;
+    using id64_set = id_set<Tag, std::uint64_t>;
 }

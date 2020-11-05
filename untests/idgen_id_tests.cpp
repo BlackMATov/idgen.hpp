@@ -10,9 +10,8 @@
 #include <idgen.hpp/idgen_id.hpp>
 namespace idgen = idgen_hpp;
 
-namespace
-{
-}
+#include <unordered_map>
+#include <unordered_set>
 
 TEST_CASE("idgen_id")
 {
@@ -52,7 +51,7 @@ TEST_CASE("idgen_id")
         STATIC_REQUIRE(id64::version_mask == 16777215ull);
     }
 
-    SECTION("basic_id") {
+    SECTION("id") {
         using id8 = idgen::id8<struct untagged>;
         {
             id8 id;
@@ -105,6 +104,31 @@ TEST_CASE("idgen_id")
             REQUIRE_FALSE(id8(2, 3) <= id8(1, 3));
             REQUIRE_FALSE(id8(1, 4) <= id8(1, 3));
             REQUIRE_FALSE(id8(1, 4) <= id8(2, 3));
+        }
+    }
+
+    SECTION("id_index") {
+        using id8 = idgen::id8<struct untagged>;
+        {
+            REQUIRE(idgen::index<id8>()(id8(1,2)) == 1u);
+            REQUIRE(idgen::index<id8>()(id8(2,3)) == 2u);
+            REQUIRE(idgen::index<id8>()(id8(3,4)) == 3u);
+        }
+    }
+
+    SECTION("id_hash") {
+        using id8 = idgen::id8<struct untagged>;
+        using id8_hash_set = std::unordered_set<id8>;
+        using id8_hash_map = std::unordered_map<id8, id8>;
+        {
+            id8_hash_set s;
+            REQUIRE(s.insert(id8(2)).second);
+            REQUIRE(s.count(id8(2)) == 1u);
+        }
+        {
+            id8_hash_map m;
+            REQUIRE(m.emplace(id8(2), id8(4)).second);
+            REQUIRE(m.at(id8(2)) == id8(4));
         }
     }
 }
