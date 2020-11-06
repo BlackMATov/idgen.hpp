@@ -138,15 +138,25 @@ TEST_CASE("idgen_set")
         {
             id8_set s{id8(11), id8(12)};
             REQUIRE(s.size() == 2u);
+            REQUIRE(s.contains(id8(11)));
+            REQUIRE(s.contains(id8(12)));
 
             s.clear();
             REQUIRE(s.size() == 0u);
+            REQUIRE_FALSE(s.contains(id8(11)));
+            REQUIRE_FALSE(s.contains(id8(12)));
 
             s.insert({id8(1), id8(2), id8(3)});
             REQUIRE(s.size() == 3u);
+            REQUIRE(s.contains(id8(1)));
+            REQUIRE(s.contains(id8(2)));
+            REQUIRE(s.contains(id8(3)));
 
             s.clear();
             REQUIRE(s.size() == 0u);
+            REQUIRE_FALSE(s.contains(id8(1)));
+            REQUIRE_FALSE(s.contains(id8(2)));
+            REQUIRE_FALSE(s.contains(id8(3)));
         }
     }
 
@@ -159,18 +169,30 @@ TEST_CASE("idgen_set")
             REQUIRE_FALSE(s.contains(id8(1)));
             REQUIRE_FALSE(s.contains(id8(3)));
 
-            REQUIRE(s.insert(id8(1)));
+            auto i1 = s.insert(id8(1));
+            REQUIRE(i1.first == id8(1));
+            REQUIRE(i1.second);
+
             REQUIRE(s.size() == 1u);
             REQUIRE(s.contains(id8(1)));
             REQUIRE_FALSE(s.contains(id8(3)));
 
-            REQUIRE(s.insert(id8(3)));
+            auto i2 = s.insert(id8(3));
+            REQUIRE(i2.first == id8(3));
+            REQUIRE(i2.second);
+
             REQUIRE(s.size() == 2u);
             REQUIRE(s.contains(id8(1)));
             REQUIRE(s.contains(id8(3)));
 
-            REQUIRE_FALSE(s.insert(id8(1)));
-            REQUIRE_FALSE(s.insert(id8(3)));
+            auto i1b = s.insert(id8(1));
+            REQUIRE(i1b.first == id8(1));
+            REQUIRE_FALSE(i1b.second);
+
+            auto i2b = s.insert(id8(3));
+            REQUIRE(i2b.first == id8(3));
+            REQUIRE_FALSE(i2b.second);
+
             REQUIRE(s.size() == 2u);
         }
         {
@@ -191,11 +213,17 @@ TEST_CASE("idgen_set")
         {
             id8_set s;
 
-            REQUIRE(s.emplace(1,2));
+            auto e1 = s.emplace(1,2);
+            REQUIRE(e1.first == id8(1,2));
+            REQUIRE(e1.second);
+
             REQUIRE(s.size() == 1u);
             REQUIRE(s.contains(id8(1,2)));
 
-            REQUIRE_FALSE(s.emplace(1,2));
+            auto e2 = s.emplace(id8(1,2));
+            REQUIRE(e2.first == id8(1,2));
+            REQUIRE_FALSE(e2.second);
+
             REQUIRE(s.size() == 1u);
             REQUIRE(s.contains(id8(1,2)));
         }

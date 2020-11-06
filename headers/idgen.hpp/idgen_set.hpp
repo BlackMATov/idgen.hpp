@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <functional>
 #include <initializer_list>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -24,7 +25,7 @@ namespace idgen_hpp
     template < typename Key
              , typename Index = index<Key>
              , typename KeyEqual = std::equal_to<Key> >
-    class set {
+    class set : Index, KeyEqual {
     public:
         using key_type = Key;
         using value_type = Key;
@@ -60,12 +61,13 @@ namespace idgen_hpp
             dense_.clear();
         }
 
-        bool insert(value_type&& value) {
-            if ( contains(value) ) {
-                return false;
+        std::pair<value_type&, bool> insert(value_type&& value) {
+            const auto dense_index_p = find_dense_index(value);
+            if ( dense_index_p.second ) {
+                return {dense_[dense_index_p.first], false};
             }
 
-            const auto index = indexer_(value);
+            const auto index = (*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
                     sparse_.size(), index + 1u, sparse_.max_size()));
@@ -73,15 +75,16 @@ namespace idgen_hpp
 
             dense_.push_back(std::move(value));
             sparse_[index] = dense_.size() - 1u;
-            return true;
+            return {dense_.back(), true};
         }
 
-        bool insert(const value_type& value) {
-            if ( contains(value) ) {
-                return false;
+        std::pair<value_type&, bool> insert(const value_type& value) {
+            const auto dense_index_p = find_dense_index(value);
+            if ( dense_index_p.second ) {
+                return {dense_[dense_index_p.first], false};
             }
 
-            const auto index = indexer_(value);
+            const auto index = (*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
                     sparse_.size(), index + 1u, sparse_.max_size()));
@@ -89,7 +92,7 @@ namespace idgen_hpp
 
             dense_.push_back(value);
             sparse_[index] = dense_.size() - 1u;
-            return true;
+            return {dense_.back(), true};
         }
 
         void insert(std::initializer_list<value_type> init) {
@@ -104,18 +107,18 @@ namespace idgen_hpp
         }
 
         template < typename... Args >
-        bool emplace(Args&&... args) {
+        std::pair<value_type&, bool> emplace(Args&&... args) {
             return insert(value_type(std::forward<Args>(args)...));
         }
 
         std::size_t erase(const key_type& key) {
-            if ( !contains(key) ) {
+            const auto dense_index_p = find_dense_index(key);
+            if ( !dense_index_p.second ) {
                 return 0u;
             }
 
-            const auto index = indexer_(key);
-            const auto dense_index = sparse_[index];
-            const auto back_dense_index = indexer_(dense_.back());
+            const auto dense_index = dense_index_p.first;
+            const auto back_dense_index = (*this)(dense_.back());
 
             if ( dense_index != dense_.size() - 1u ) {
                 using std::swap;
@@ -132,27 +135,54 @@ namespace idgen_hpp
                 && std::is_nothrow_swappable_v<key_equal>)
         {
             using std::swap;
-            swap(indexer_, other.indexer_);
-            swap(key_equal_, other.key_equal_);
+            swap(static_cast<indexer&>(*this), static_cast<indexer&>(other));
+            swap(static_cast<key_equal&>(*this), static_cast<key_equal&>(other));
             swap(dense_, other.dense_);
             swap(sparse_, other.sparse_);
         }
 
         std::size_t count(const key_type& key) const {
-            return contains(key) ? 1u : 0u;
+            return find_dense_index(key).second ? 1u : 0u;
         }
 
         bool contains(const key_type& key) const {
-            const auto index = indexer_(key);
-            return index < sparse_.size()
+            return find_dense_index(key).second;
+        }
+
+        indexer index_function() const {
+            return *this;
+        }
+
+        key_equal key_eq() const {
+            return *this;
+        }
+
+        std::size_t get_dense_index(const key_type& key) const {
+            const auto dense_index_p = find_dense_index(key);
+            if ( dense_index_p.second ) {
+                return dense_index_p.first;
+            }
+            throw std::logic_error("idgen_hpp::set (key not found)");
+        }
+
+        std::pair<std::size_t, bool> find_dense_index(const key_type& key) const {
+            const auto index = (*this)(key);
+
+            if ( index < sparse_.size()
                 && sparse_[index] < dense_.size()
-                && key_equal_(dense_[sparse_[index]], key);
+                && (*this)(dense_[sparse_[index]], key) )
+            {
+                return {sparse_[index], true};
+            }
+
+            return {std::size_t(-1), false};
         }
     private:
-        indexer indexer_;
-        key_equal key_equal_;
-        std::vector<value_type> dense_;
-        std::vector<std::size_t> sparse_;
+        using dense_type = std::vector<value_type>;
+        using sparse_type = std::vector<std::size_t>;
+    private:
+        dense_type dense_;
+        sparse_type sparse_;
     };
 }
 
