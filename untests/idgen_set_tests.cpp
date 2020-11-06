@@ -221,7 +221,7 @@ TEST_CASE("idgen_set")
         {
             id8_set s;
 
-            auto e1 = s.emplace(1,2);
+            auto e1 = s.emplace(std::uint8_t(1), std::uint8_t(2));
             REQUIRE(e1.first == id8(1,2));
             REQUIRE(e1.second);
 
