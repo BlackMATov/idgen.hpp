@@ -42,6 +42,11 @@ namespace idgen_hpp
         map(const map& other) = default;
         map& operator=(const map& other) = default;
 
+        map& operator=(std::initializer_list<value_type> init) {
+            map(init).swap(*this);
+            return *this;
+        }
+
         map(std::initializer_list<value_type> init) {
             insert(init);
         }

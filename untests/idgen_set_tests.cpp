@@ -102,6 +102,14 @@ TEST_CASE("idgen_set")
             REQUIRE(s2.contains(id8(2)));
             REQUIRE(s2.contains(id8(3)));
         }
+        {
+            id8_set s1{id8(1), id8(2), id8(3)};
+            s1 = {id8(4), id8(5)};
+
+            REQUIRE(s1.size() == 2);
+            REQUIRE(s1.contains(id8(4)));
+            REQUIRE(s1.contains(id8(5)));
+        }
     }
 
     SECTION("empty") {

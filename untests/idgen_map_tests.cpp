@@ -74,6 +74,16 @@ TEST_CASE("idgen_map")
             REQUIRE(s2.at(id8(2)) == 20u);
             REQUIRE(s2.at(id8(3)) == 30u);
         }
+        {
+            id8_map s1{{id8(1), 10u}, {id8(2), 20u}, {id8(3), 30u}};
+            s1 = {{id8(4), 40u}, {id8(5), 50u}};
+
+            REQUIRE(s1.size() == 2);
+            REQUIRE(s1.contains(id8(4)));
+            REQUIRE(s1.contains(id8(5)));
+            REQUIRE(s1.at(id8(4)) == 40u);
+            REQUIRE(s1.at(id8(5)) == 50u);
+        }
     }
 
     SECTION("empty") {

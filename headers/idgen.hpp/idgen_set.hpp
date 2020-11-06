@@ -40,6 +40,11 @@ namespace idgen_hpp
         set(const set& other) = default;
         set& operator=(const set& other) = default;
 
+        set& operator=(std::initializer_list<value_type> init) {
+            set(init).swap(*this);
+            return *this;
+        }
+
         set(std::initializer_list<value_type> init) {
             insert(init);
         }
