@@ -72,7 +72,7 @@ namespace idgen_hpp
                 return {dense_[dense_index_p.first], false};
             }
 
-            const auto index = (*this)(value);
+            const auto index = static_cast<indexer&>(*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
                     sparse_.size(), index + 1u, sparse_.max_size()));
@@ -89,7 +89,7 @@ namespace idgen_hpp
                 return {dense_[dense_index_p.first], false};
             }
 
-            const auto index = (*this)(value);
+            const auto index = static_cast<indexer&>(*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
                     sparse_.size(), index + 1u, sparse_.max_size()));
@@ -123,7 +123,7 @@ namespace idgen_hpp
             }
 
             const auto dense_index = dense_index_p.first;
-            const auto back_dense_index = (*this)(dense_.back());
+            const auto back_dense_index = static_cast<indexer&>(*this)(dense_.back());
 
             if ( dense_index != dense_.size() - 1u ) {
                 using std::swap;
@@ -171,11 +171,11 @@ namespace idgen_hpp
         }
 
         std::pair<std::size_t, bool> find_dense_index(const key_type& key) const {
-            const auto index = (*this)(key);
+            const auto index = static_cast<const indexer&>(*this)(key);
 
             if ( index < sparse_.size()
                 && sparse_[index] < dense_.size()
-                && (*this)(dense_[sparse_[index]], key) )
+                && static_cast<const key_equal&>(*this)(dense_[sparse_[index]], key) )
             {
                 return {sparse_[index], true};
             }
