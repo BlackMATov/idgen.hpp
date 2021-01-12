@@ -4,15 +4,14 @@
  * Copyright (C) 2020-2021, by Matvey Cherevko (blackmatov@gmail.com)
  ******************************************************************************/
 
-#define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch.hpp>
-
 #include <idgen.hpp/idgen_map.hpp>
+#include "doctest/doctest.hpp"
+
 namespace idgen = idgen_hpp;
 
 TEST_CASE("idgen_map")
 {
-    SECTION("ctor") {
+    SUBCASE("ctor") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -31,7 +30,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("operator=") {
+    SUBCASE("operator=") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -86,7 +85,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("empty") {
+    SUBCASE("empty") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -98,7 +97,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("size") {
+    SUBCASE("size") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -114,7 +113,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("clear") {
+    SUBCASE("clear") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -142,7 +141,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("insert") {
+    SUBCASE("insert") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -192,7 +191,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("insert_or_assign") {
+    SUBCASE("insert_or_assign") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -217,7 +216,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("emplace") {
+    SUBCASE("emplace") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -243,7 +242,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("try_emplace") {
+    SUBCASE("try_emplace") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -274,7 +273,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("erase") {
+    SUBCASE("erase") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -311,7 +310,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("swap") {
+    SUBCASE("swap") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -343,7 +342,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("at") {
+    SUBCASE("at") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -362,7 +361,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("operator[]") {
+    SUBCASE("operator[]") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -379,7 +378,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("count") {
+    SUBCASE("count") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {
@@ -391,7 +390,7 @@ TEST_CASE("idgen_map")
         }
     }
 
-    SECTION("contains") {
+    SUBCASE("contains") {
         using id8 = idgen::id8<struct untagged>;
         using id8_map = idgen::id8_map<struct untagged, std::uint32_t>;
         {

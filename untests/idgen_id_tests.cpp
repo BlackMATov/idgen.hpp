@@ -4,18 +4,17 @@
  * Copyright (C) 2020-2021, by Matvey Cherevko (blackmatov@gmail.com)
  ******************************************************************************/
 
-#define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch.hpp>
-
 #include <idgen.hpp/idgen_id.hpp>
-namespace idgen = idgen_hpp;
+#include "doctest/doctest.hpp"
 
 #include <unordered_map>
 #include <unordered_set>
 
+namespace idgen = idgen_hpp;
+
 TEST_CASE("idgen_id")
 {
-    SECTION("id8") {
+    SUBCASE("id8") {
         using id8 = idgen::id8<struct untagged>;
         STATIC_REQUIRE(sizeof(id8) == 1u);
         STATIC_REQUIRE(id8::index_bits == 5u);
@@ -24,7 +23,7 @@ TEST_CASE("idgen_id")
         STATIC_REQUIRE(id8::version_mask == 7u);
     }
 
-    SECTION("id16") {
+    SUBCASE("id16") {
         using id16 = idgen::id16<struct untagged>;
         STATIC_REQUIRE(sizeof(id16) == 2u);
         STATIC_REQUIRE(id16::index_bits == 10u);
@@ -33,7 +32,7 @@ TEST_CASE("idgen_id")
         STATIC_REQUIRE(id16::version_mask == 63u);
     }
 
-    SECTION("id32") {
+    SUBCASE("id32") {
         using id32 = idgen::id32<struct untagged>;
         STATIC_REQUIRE(sizeof(id32) == 4u);
         STATIC_REQUIRE(id32::index_bits == 20u);
@@ -42,7 +41,7 @@ TEST_CASE("idgen_id")
         STATIC_REQUIRE(id32::version_mask == 4095u);
     }
 
-    SECTION("id64") {
+    SUBCASE("id64") {
         using id64 = idgen::id64<struct untagged>;
         STATIC_REQUIRE(sizeof(id64) == 8u);
         STATIC_REQUIRE(id64::index_bits == 40u);
@@ -51,7 +50,7 @@ TEST_CASE("idgen_id")
         STATIC_REQUIRE(id64::version_mask == 16777215ull);
     }
 
-    SECTION("id") {
+    SUBCASE("id") {
         using id8 = idgen::id8<struct untagged>;
         {
             id8 id;
@@ -107,7 +106,7 @@ TEST_CASE("idgen_id")
         }
     }
 
-    SECTION("id_index") {
+    SUBCASE("id_index") {
         using id8 = idgen::id8<struct untagged>;
         {
             REQUIRE(idgen::index<id8>()(id8(1,2)) == 1u);
@@ -116,7 +115,7 @@ TEST_CASE("idgen_id")
         }
     }
 
-    SECTION("id_hash") {
+    SUBCASE("id_hash") {
         using id8 = idgen::id8<struct untagged>;
         using id8_hash_set = std::unordered_set<id8>;
         using id8_hash_map = std::unordered_map<id8, id8>;

@@ -4,15 +4,14 @@
  * Copyright (C) 2020-2021, by Matvey Cherevko (blackmatov@gmail.com)
  ******************************************************************************/
 
-#define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch.hpp>
-
 #include <idgen.hpp/idgen_pool.hpp>
+#include "doctest/doctest.hpp"
+
 namespace idgen = idgen_hpp;
 
 TEST_CASE("idgen_pool")
 {
-    SECTION("acquire/release") {
+    SUBCASE("acquire/release") {
         using id8 = idgen::id8<struct untagged>;
         using id8_pool = idgen::id8_pool<struct untagged>;
         {
@@ -82,7 +81,7 @@ TEST_CASE("idgen_pool")
         }
     }
 
-    SECTION("valid") {
+    SUBCASE("valid") {
         using id8 = idgen::id8<struct untagged>;
         using id8_pool = idgen::id8_pool<struct untagged>;
         {
@@ -106,7 +105,7 @@ TEST_CASE("idgen_pool")
         }
     }
 
-    SECTION("alive") {
+    SUBCASE("alive") {
         using id8 = idgen::id8<struct untagged>;
         using id8_pool = idgen::id8_pool<struct untagged>;
         {

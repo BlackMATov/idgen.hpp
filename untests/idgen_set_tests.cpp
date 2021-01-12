@@ -4,15 +4,14 @@
  * Copyright (C) 2020-2021, by Matvey Cherevko (blackmatov@gmail.com)
  ******************************************************************************/
 
-#define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch.hpp>
-
 #include <idgen.hpp/idgen_set.hpp>
+#include "doctest/doctest.hpp"
+
 namespace idgen = idgen_hpp;
 
 TEST_CASE("idgen_set")
 {
-    SECTION("ctor") {
+    SUBCASE("ctor") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -68,7 +67,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("operator=") {
+    SUBCASE("operator=") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -112,7 +111,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("empty") {
+    SUBCASE("empty") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -124,7 +123,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("size") {
+    SUBCASE("size") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -140,7 +139,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("clear") {
+    SUBCASE("clear") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -168,7 +167,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("insert") {
+    SUBCASE("insert") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -215,7 +214,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("emplace") {
+    SUBCASE("emplace") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -237,7 +236,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("erase") {
+    SUBCASE("erase") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -268,7 +267,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("swap") {
+    SUBCASE("swap") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -295,7 +294,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("count") {
+    SUBCASE("count") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {
@@ -307,7 +306,7 @@ TEST_CASE("idgen_set")
         }
     }
 
-    SECTION("contains") {
+    SUBCASE("contains") {
         using id8 = idgen::id8<struct untagged>;
         using id8_set = idgen::id8_set<struct untagged>;
         {

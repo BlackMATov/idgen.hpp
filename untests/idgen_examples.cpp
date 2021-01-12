@@ -4,10 +4,9 @@
  * Copyright (C) 2020-2021, by Matvey Cherevko (blackmatov@gmail.com)
  ******************************************************************************/
 
-#define CATCH_CONFIG_FAST_COMPILE
-#include <catch2/catch.hpp>
-
 #include <idgen.hpp/idgen_id.hpp>
+#include "doctest/doctest.hpp"
+
 namespace idgen = idgen_hpp;
 
 namespace
