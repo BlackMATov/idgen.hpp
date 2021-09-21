@@ -16,38 +16,38 @@ TEST_CASE("idgen_id")
 {
     SUBCASE("id8") {
         using id8 = idgen::id8<struct untagged>;
-        STATIC_REQUIRE(sizeof(id8) == 1u);
-        STATIC_REQUIRE(id8::index_bits == 5u);
-        STATIC_REQUIRE(id8::version_bits == 3u);
-        STATIC_REQUIRE(id8::index_mask == 31u);
-        STATIC_REQUIRE(id8::version_mask == 7u);
+        STATIC_CHECK(sizeof(id8) == 1u);
+        STATIC_CHECK(id8::index_bits == 5u);
+        STATIC_CHECK(id8::version_bits == 3u);
+        STATIC_CHECK(id8::index_mask == 31u);
+        STATIC_CHECK(id8::version_mask == 7u);
     }
 
     SUBCASE("id16") {
         using id16 = idgen::id16<struct untagged>;
-        STATIC_REQUIRE(sizeof(id16) == 2u);
-        STATIC_REQUIRE(id16::index_bits == 10u);
-        STATIC_REQUIRE(id16::version_bits == 6u);
-        STATIC_REQUIRE(id16::index_mask == 1023u);
-        STATIC_REQUIRE(id16::version_mask == 63u);
+        STATIC_CHECK(sizeof(id16) == 2u);
+        STATIC_CHECK(id16::index_bits == 10u);
+        STATIC_CHECK(id16::version_bits == 6u);
+        STATIC_CHECK(id16::index_mask == 1023u);
+        STATIC_CHECK(id16::version_mask == 63u);
     }
 
     SUBCASE("id32") {
         using id32 = idgen::id32<struct untagged>;
-        STATIC_REQUIRE(sizeof(id32) == 4u);
-        STATIC_REQUIRE(id32::index_bits == 20u);
-        STATIC_REQUIRE(id32::version_bits == 12u);
-        STATIC_REQUIRE(id32::index_mask == 1048575u);
-        STATIC_REQUIRE(id32::version_mask == 4095u);
+        STATIC_CHECK(sizeof(id32) == 4u);
+        STATIC_CHECK(id32::index_bits == 20u);
+        STATIC_CHECK(id32::version_bits == 12u);
+        STATIC_CHECK(id32::index_mask == 1048575u);
+        STATIC_CHECK(id32::version_mask == 4095u);
     }
 
     SUBCASE("id64") {
         using id64 = idgen::id64<struct untagged>;
-        STATIC_REQUIRE(sizeof(id64) == 8u);
-        STATIC_REQUIRE(id64::index_bits == 40u);
-        STATIC_REQUIRE(id64::version_bits == 24u);
-        STATIC_REQUIRE(id64::index_mask == 1099511627775ull);
-        STATIC_REQUIRE(id64::version_mask == 16777215ull);
+        STATIC_CHECK(sizeof(id64) == 8u);
+        STATIC_CHECK(id64::index_bits == 40u);
+        STATIC_CHECK(id64::version_bits == 24u);
+        STATIC_CHECK(id64::index_mask == 1099511627775ull);
+        STATIC_CHECK(id64::version_mask == 16777215ull);
     }
 
     SUBCASE("id") {
