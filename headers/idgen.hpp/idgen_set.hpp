@@ -25,7 +25,7 @@ namespace idgen_hpp
     template < typename Key
              , typename Index = index<Key>
              , typename KeyEqual = std::equal_to<Key> >
-    class set : Index, KeyEqual {
+    class set final : Index, KeyEqual {
     public:
         using key_type = Key;
         using value_type = Key;

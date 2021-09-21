@@ -53,7 +53,7 @@ namespace idgen_hpp
     template < typename Tag
              , typename Value
              , typename Traits = id_value_traits<Value> >
-    class id {
+    class id final {
     public:
         using tag_type = Tag;
         using value_type = Value;
@@ -68,12 +68,12 @@ namespace idgen_hpp
         id() = default;
 
         explicit id(value_type index)
-        : value_(index & index_mask) {
+        : value_{static_cast<value_type>(index & index_mask)} {
             assert(index <= index_mask);
         }
 
         id(value_type index, value_type version)
-        : value_((index & index_mask) | ((version & version_mask) << index_bits)) {
+        : value_{static_cast<value_type>((index & index_mask) | ((version & version_mask) << index_bits))} {
             assert(index <= index_mask);
             assert(version <= version_mask);
         }

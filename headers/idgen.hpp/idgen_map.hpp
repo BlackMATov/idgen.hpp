@@ -26,7 +26,7 @@ namespace idgen_hpp
              , typename T
              , typename Index = idgen_hpp::index<Key>
              , typename KeyEqual = std::equal_to<Key> >
-    class map {
+    class map final {
     public:
         using key_type = Key;
         using mapped_type = T;

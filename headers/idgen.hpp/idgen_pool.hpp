@@ -21,7 +21,7 @@ namespace idgen_hpp
     template < typename Tag
              , typename Value
              , typename Traits = id_value_traits<Value> >
-    class pool {
+    class pool final {
     public:
         using id_type = id<Tag, Value, Traits>;
         using id_value_type = typename id_type::value_type;
