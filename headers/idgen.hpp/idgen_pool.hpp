@@ -46,7 +46,7 @@ namespace idgen_hpp
             if ( acquired_ids_.size() < id_type::index_mask ) {
                 return acquired_ids_.emplace_back(
                     static_cast<id_value_type>(acquired_ids_.size()),
-                    0u);
+                    static_cast<id_value_type>(0));
             }
 
             throw std::logic_error("idgen_hpp::pool (id index overflow)");
