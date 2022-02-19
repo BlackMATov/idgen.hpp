@@ -41,7 +41,7 @@ namespace idgen_hpp
                 const auto index = available_;
                 const auto version = acquired_ids_[index].version();
                 available_ = acquired_ids_[index].index();
-                return acquired_ids_[index] = id_type(index, version);
+                return acquired_ids_[index] = id_type{index, version};
             }
 
             if ( acquired_ids_.size() < id_type::index_mask ) {
@@ -55,9 +55,9 @@ namespace idgen_hpp
 
         void release(id_type id) noexcept {
             assert(valid(id));
-            acquired_ids_[id.index()] = id_type(
+            acquired_ids_[id.index()] = id_type{
                 available_ & id_type::index_mask,
-                (id.version() + 1) & id_type::version_mask);
+                (id.version() + 1) & id_type::version_mask};
             available_ = id.index();
         }
 

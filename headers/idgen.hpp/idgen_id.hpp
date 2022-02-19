@@ -63,8 +63,8 @@ namespace idgen_hpp
         static constexpr int index_bits = static_cast<int>(Traits::index_bits);
         static constexpr int version_bits = static_cast<int>(Traits::version_bits);
 
-        static constexpr value_type index_mask = (value_type(1) << index_bits) - value_type(1);
-        static constexpr value_type version_mask = (value_type(1) << version_bits) - value_type(1);
+        static constexpr value_type index_mask = (value_type{1} << index_bits) - value_type{1};
+        static constexpr value_type version_mask = (value_type{1} << version_bits) - value_type{1};
     public:
         id() = default;
 
