@@ -5,7 +5,7 @@
  ******************************************************************************/
 
 #include <idgen.hpp/idgen_map.hpp>
-#include "doctest/doctest.hpp"
+#include "idgen_untests.hpp"
 
 namespace idgen = idgen_hpp;
 

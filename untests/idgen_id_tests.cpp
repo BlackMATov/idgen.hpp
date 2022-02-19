@@ -5,7 +5,7 @@
  ******************************************************************************/
 
 #include <idgen.hpp/idgen_id.hpp>
-#include "doctest/doctest.hpp"
+#include "idgen_untests.hpp"
 
 #include <unordered_map>
 #include <unordered_set>
@@ -16,38 +16,38 @@ TEST_CASE("idgen_id")
 {
     SUBCASE("id8") {
         using id8 = idgen::id8<struct untagged>;
-        STATIC_CHECK(sizeof(id8) == 1u);
-        STATIC_CHECK(id8::index_bits == 5u);
-        STATIC_CHECK(id8::version_bits == 3u);
-        STATIC_CHECK(id8::index_mask == 31u);
-        STATIC_CHECK(id8::version_mask == 7u);
+        static_assert(sizeof(id8) == 1u);
+        static_assert(id8::index_bits == 5u);
+        static_assert(id8::version_bits == 3u);
+        static_assert(id8::index_mask == 31u);
+        static_assert(id8::version_mask == 7u);
     }
 
     SUBCASE("id16") {
         using id16 = idgen::id16<struct untagged>;
-        STATIC_CHECK(sizeof(id16) == 2u);
-        STATIC_CHECK(id16::index_bits == 10u);
-        STATIC_CHECK(id16::version_bits == 6u);
-        STATIC_CHECK(id16::index_mask == 1023u);
-        STATIC_CHECK(id16::version_mask == 63u);
+        static_assert(sizeof(id16) == 2u);
+        static_assert(id16::index_bits == 10u);
+        static_assert(id16::version_bits == 6u);
+        static_assert(id16::index_mask == 1023u);
+        static_assert(id16::version_mask == 63u);
     }
 
     SUBCASE("id32") {
         using id32 = idgen::id32<struct untagged>;
-        STATIC_CHECK(sizeof(id32) == 4u);
-        STATIC_CHECK(id32::index_bits == 20u);
-        STATIC_CHECK(id32::version_bits == 12u);
-        STATIC_CHECK(id32::index_mask == 1048575u);
-        STATIC_CHECK(id32::version_mask == 4095u);
+        static_assert(sizeof(id32) == 4u);
+        static_assert(id32::index_bits == 20u);
+        static_assert(id32::version_bits == 12u);
+        static_assert(id32::index_mask == 1048575u);
+        static_assert(id32::version_mask == 4095u);
     }
 
     SUBCASE("id64") {
         using id64 = idgen::id64<struct untagged>;
-        STATIC_CHECK(sizeof(id64) == 8u);
-        STATIC_CHECK(id64::index_bits == 40u);
-        STATIC_CHECK(id64::version_bits == 24u);
-        STATIC_CHECK(id64::index_mask == 1099511627775ull);
-        STATIC_CHECK(id64::version_mask == 16777215ull);
+        static_assert(sizeof(id64) == 8u);
+        static_assert(id64::index_bits == 40u);
+        static_assert(id64::version_bits == 24u);
+        static_assert(id64::index_mask == 1099511627775ull);
+        static_assert(id64::version_mask == 16777215ull);
     }
 
     SUBCASE("id") {

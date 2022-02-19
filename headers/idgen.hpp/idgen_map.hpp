@@ -35,9 +35,10 @@ namespace idgen_hpp
         using key_equal = KeyEqual;
     public:
         map() = default;
+        ~map() = default;
 
-        map(map&& other) = default;
-        map& operator=(map&& other) = default;
+        map(map&& other) noexcept = default;
+        map& operator=(map&& other) noexcept = default;
 
         map(const map& other) = default;
         map& operator=(const map& other) = default;
@@ -56,11 +57,11 @@ namespace idgen_hpp
             insert(first, last);
         }
 
-        bool empty() const noexcept {
+        [[nodiscard]] bool empty() const noexcept {
             return values_.empty();
         }
 
-        std::size_t size() const noexcept {
+        [[nodiscard]] std::size_t size() const noexcept {
             return values_.size();
         }
 
@@ -182,7 +183,7 @@ namespace idgen_hpp
         std::size_t erase(const key_type& key) {
             const auto dense_index_p = keys_.find_dense_index(key);
             if ( !dense_index_p.second ) {
-                return false;
+                return 0;
             }
 
             if ( dense_index_p.first != values_.size() - 1 ) {
@@ -192,7 +193,7 @@ namespace idgen_hpp
 
             values_.pop_back();
             keys_.erase(key);
-            return 1u;
+            return 1;
         }
 
         void swap(map& other)
@@ -221,7 +222,7 @@ namespace idgen_hpp
         }
 
         std::size_t count(const key_type& key) const {
-            return keys_.contains(key) ? 1u : 0u;
+            return keys_.contains(key) ? 1 : 0;
         }
 
         bool contains(const key_type& key) const {

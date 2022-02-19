@@ -33,9 +33,10 @@ namespace idgen_hpp
         using key_equal = KeyEqual;
     public:
         set() = default;
+        ~set() = default;
 
-        set(set&& other) = default;
-        set& operator=(set&& other) = default;
+        set(set&& other) noexcept = default;
+        set& operator=(set&& other) noexcept = default;
 
         set(const set& other) = default;
         set& operator=(const set& other) = default;
@@ -54,11 +55,11 @@ namespace idgen_hpp
             insert(first, last);
         }
 
-        bool empty() const noexcept {
+        [[nodiscard]] bool empty() const noexcept {
             return dense_.empty();
         }
 
-        std::size_t size() const noexcept {
+        [[nodiscard]] std::size_t size() const noexcept {
             return dense_.size();
         }
 
@@ -75,11 +76,11 @@ namespace idgen_hpp
             const auto index = static_cast<indexer&>(*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
-                    sparse_.size(), index + 1u, sparse_.max_size()));
+                    sparse_.size(), index + 1, sparse_.max_size()));
             }
 
             dense_.push_back(std::move(value));
-            sparse_[index] = dense_.size() - 1u;
+            sparse_[index] = dense_.size() - 1;
             return {dense_.back(), true};
         }
 
@@ -92,11 +93,11 @@ namespace idgen_hpp
             const auto index = static_cast<indexer&>(*this)(value);
             if ( index >= sparse_.size() ) {
                 sparse_.resize(detail::next_capacity_size(
-                    sparse_.size(), index + 1u, sparse_.max_size()));
+                    sparse_.size(), index + 1, sparse_.max_size()));
             }
 
             dense_.push_back(value);
-            sparse_[index] = dense_.size() - 1u;
+            sparse_[index] = dense_.size() - 1;
             return {dense_.back(), true};
         }
 
@@ -119,20 +120,20 @@ namespace idgen_hpp
         std::size_t erase(const key_type& key) {
             const auto dense_index_p = find_dense_index(key);
             if ( !dense_index_p.second ) {
-                return 0u;
+                return 0;
             }
 
             const auto dense_index = dense_index_p.first;
             const auto back_dense_index = static_cast<indexer&>(*this)(dense_.back());
 
-            if ( dense_index != dense_.size() - 1u ) {
+            if ( dense_index != dense_.size() - 1 ) {
                 using std::swap;
                 swap(dense_[dense_index], dense_.back());
                 sparse_[back_dense_index] = dense_index;
             }
 
             dense_.pop_back();
-            return 1u;
+            return 1;
         }
 
         void swap(set& other)
@@ -147,7 +148,7 @@ namespace idgen_hpp
         }
 
         std::size_t count(const key_type& key) const {
-            return find_dense_index(key).second ? 1u : 0u;
+            return find_dense_index(key).second ? 1 : 0;
         }
 
         bool contains(const key_type& key) const {

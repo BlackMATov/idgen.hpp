@@ -7,6 +7,7 @@
 #pragma once
 
 #include <cassert>
+#include <climits>
 #include <cstddef>
 #include <cstdint>
 
@@ -125,7 +126,7 @@ namespace idgen_hpp
     public:
         static_assert(
             Traits::index_bits >= 0 &&
-            Traits::index_bits <= sizeof(std::size_t) * 8u);
+            Traits::index_bits <= sizeof(std::size_t) * CHAR_BIT);
         std::size_t operator()(const id_type& id) const noexcept {
             return static_cast<std::size_t>(id.index());
         }

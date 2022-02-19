@@ -28,10 +28,10 @@ namespace idgen_hpp::detail
             throw std::length_error("idgen_hpp::next_capacity_size");
         }
 
-        if ( cur_size >= max_size / 2u ) {
+        if ( cur_size >= max_size / 2 ) {
             return max_size;
         }
 
-        return std::max(cur_size * 2u, min_size);
+        return std::max(cur_size * 2, min_size);
     }
 }

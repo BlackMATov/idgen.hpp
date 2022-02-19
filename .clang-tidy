@@ -1,0 +1,20 @@
+---
+Checks: '-*,
+
+        clang-analyzer-*,
+
+        concurrency-*,
+
+        cppcoreguidelines-*,
+
+        modernize-*,
+        -modernize-use-trailing-return-type,
+
+        performance-*,
+
+        portability-*,
+
+        readability-*,
+        -readability-redundant-access-specifiers,
+        '
+...

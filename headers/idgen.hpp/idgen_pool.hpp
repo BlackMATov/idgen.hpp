@@ -28,9 +28,10 @@ namespace idgen_hpp
         using id_traits_type = typename id_type::traits_type;
     public:
         pool() = default;
+        ~pool() = default;
 
-        pool(pool&& other) = default;
-        pool& operator=(pool&& other) = default;
+        pool(pool&& other) noexcept = default;
+        pool& operator=(pool&& other) noexcept = default;
 
         pool(const pool& other) = default;
         pool& operator=(const pool& other) = default;
@@ -56,7 +57,7 @@ namespace idgen_hpp
             assert(valid(id));
             acquired_ids_[id.index()] = id_type(
                 available_ & id_type::index_mask,
-                (id.version() + 1u) & id_type::version_mask);
+                (id.version() + 1) & id_type::version_mask);
             available_ = id.index();
         }
 
@@ -65,7 +66,7 @@ namespace idgen_hpp
                 && acquired_ids_[id.index()] == id;
         }
 
-        std::size_t alive() const noexcept {
+        [[nodiscard]] std::size_t alive() const noexcept {
             std::size_t result = acquired_ids_.size();
             for ( auto i = available_; i != id_type::index_mask; --result ) {
                 i = acquired_ids_[i].index();
