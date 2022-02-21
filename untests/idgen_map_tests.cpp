@@ -350,11 +350,11 @@ TEST_CASE("idgen_map")
 
             REQUIRE(s.at(id8(1)) == 10u);
             REQUIRE(s.at(id8(2)) == 20u);
-            REQUIRE_THROWS_AS(s.at(id8(3)), std::logic_error);
+            REQUIRE_THROWS_AS(std::ignore = s.at(id8(3)), std::logic_error);
 
             REQUIRE(std::as_const(s).at(id8(1)) == 10u);
             REQUIRE(std::as_const(s).at(id8(2)) == 20u);
-            REQUIRE_THROWS_AS(std::as_const(s).at(id8(3)), std::logic_error);
+            REQUIRE_THROWS_AS(std::ignore = std::as_const(s).at(id8(3)), std::logic_error);
 
             s.at(id8(2)) = 30u;
             REQUIRE(std::as_const(s).at(id8(2)) == 30u);

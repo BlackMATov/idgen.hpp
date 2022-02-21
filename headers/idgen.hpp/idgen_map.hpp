@@ -205,35 +205,35 @@ namespace idgen_hpp
             swap(values_, other.values_);
         }
 
-        mapped_type& at(const key_type& key) {
+        [[nodiscard]] mapped_type& at(const key_type& key) {
             return values_[keys_.get_dense_index(key)];
         }
 
-        const mapped_type& at(const key_type& key) const {
+        [[nodiscard]] const mapped_type& at(const key_type& key) const {
             return values_[keys_.get_dense_index(key)];
         }
 
-        mapped_type& operator[](const key_type& key) {
+        [[nodiscard]] mapped_type& operator[](const key_type& key) {
             return try_emplace(key).first;
         }
 
-        mapped_type& operator[](key_type&& key) {
+        [[nodiscard]] mapped_type& operator[](key_type&& key) {
             return try_emplace(std::move(key)).first;
         }
 
-        std::size_t count(const key_type& key) const {
+        [[nodiscard]] std::size_t count(const key_type& key) const {
             return keys_.contains(key) ? 1 : 0;
         }
 
-        bool contains(const key_type& key) const {
+        [[nodiscard]] bool contains(const key_type& key) const {
             return keys_.contains(key);
         }
 
-        indexer index_function() const {
+        [[nodiscard]] indexer index_function() const {
             return keys_.index_function();
         }
 
-        key_equal key_eq() const {
+        [[nodiscard]] key_equal key_eq() const {
             return keys_.key_eq();
         }
     private:

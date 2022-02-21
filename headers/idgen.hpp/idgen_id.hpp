@@ -79,15 +79,15 @@ namespace idgen_hpp
             assert(version <= version_mask);
         }
 
-        value_type value() const noexcept {
+        [[nodiscard]] value_type value() const noexcept {
             return value_;
         }
 
-        value_type index() const noexcept {
+        [[nodiscard]] value_type index() const noexcept {
             return value_ & index_mask;
         }
 
-        value_type version() const noexcept {
+        [[nodiscard]] value_type version() const noexcept {
             return (value_ >> index_bits) & version_mask;
         }
     private:
@@ -98,22 +98,22 @@ namespace idgen_hpp
 namespace idgen_hpp
 {
     template < typename Tag, typename Value, typename Traits >
-    bool operator<(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
+    [[nodiscard]] bool operator<(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() < r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator<=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
+    [[nodiscard]] bool operator<=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() <= r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator==(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
+    [[nodiscard]] bool operator==(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() == r.value();
     }
 
     template < typename Tag, typename Value, typename Traits >
-    bool operator!=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
+    [[nodiscard]] bool operator!=(id<Tag, Value, Traits> l, id<Tag, Value, Traits> r) noexcept {
         return l.value() != r.value();
     }
 }
@@ -127,7 +127,7 @@ namespace idgen_hpp
         static_assert(
             Traits::index_bits >= 0 &&
             Traits::index_bits <= sizeof(std::size_t) * CHAR_BIT);
-        std::size_t operator()(const id_type& id) const noexcept {
+        [[nodiscard]] std::size_t operator()(const id_type& id) const noexcept {
             return static_cast<std::size_t>(id.index());
         }
     };
@@ -139,7 +139,7 @@ namespace std
     class hash<idgen_hpp::id<Tag, Value, Traits>> {
         using id_type = idgen_hpp::id<Tag, Value, Traits>;
     public:
-        std::size_t operator()(const id_type& id) const noexcept {
+        [[nodiscard]] std::size_t operator()(const id_type& id) const noexcept {
             return hash<typename id_type::value_type>()(id.value());
         }
     };

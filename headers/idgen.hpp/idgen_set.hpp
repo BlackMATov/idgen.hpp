@@ -147,23 +147,23 @@ namespace idgen_hpp
             swap(sparse_, other.sparse_);
         }
 
-        std::size_t count(const key_type& key) const {
+        [[nodiscard]] std::size_t count(const key_type& key) const {
             return find_dense_index(key).second ? 1 : 0;
         }
 
-        bool contains(const key_type& key) const {
+        [[nodiscard]] bool contains(const key_type& key) const {
             return find_dense_index(key).second;
         }
 
-        indexer index_function() const {
+        [[nodiscard]] indexer index_function() const {
             return *this;
         }
 
-        key_equal key_eq() const {
+        [[nodiscard]] key_equal key_eq() const {
             return *this;
         }
 
-        std::size_t get_dense_index(const key_type& key) const {
+        [[nodiscard]] std::size_t get_dense_index(const key_type& key) const {
             const auto dense_index_p = find_dense_index(key);
             if ( dense_index_p.second ) {
                 return dense_index_p.first;
@@ -171,7 +171,7 @@ namespace idgen_hpp
             throw std::logic_error("idgen_hpp::set (key not found)");
         }
 
-        std::pair<std::size_t, bool> find_dense_index(const key_type& key) const {
+        [[nodiscard]] std::pair<std::size_t, bool> find_dense_index(const key_type& key) const {
             const auto index = static_cast<const indexer&>(*this)(key);
 
             if ( index < sparse_.size()

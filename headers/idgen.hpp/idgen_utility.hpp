@@ -19,7 +19,7 @@ namespace idgen_hpp
 
 namespace idgen_hpp::detail
 {
-    inline std::size_t next_capacity_size(
+    [[nodiscard]] inline std::size_t next_capacity_size(
         std::size_t cur_size,
         std::size_t min_size,
         std::size_t max_size)

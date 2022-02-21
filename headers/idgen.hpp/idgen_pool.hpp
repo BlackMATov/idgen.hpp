@@ -36,11 +36,11 @@ namespace idgen_hpp
         pool(const pool& other) = default;
         pool& operator=(const pool& other) = default;
 
-        id_type acquire() {
-            if ( available_ != id_type::index_mask ) {
-                const auto index = available_;
-                const auto version = acquired_ids_[index].version();
-                available_ = acquired_ids_[index].index();
+        [[nodiscard]] id_type acquire() {
+            if ( available_.index() != id_type::index_mask ) {
+                const id_value_type index = available_.index();
+                const id_value_type version = acquired_ids_[index].version();
+                available_ = id_type{acquired_ids_[index].index()};
                 return acquired_ids_[index] = id_type{index, version};
             }
 
@@ -55,27 +55,29 @@ namespace idgen_hpp
 
         void release(id_type id) noexcept {
             assert(valid(id));
+
             acquired_ids_[id.index()] = id_type{
-                available_ & id_type::index_mask,
-                (id.version() + 1) & id_type::version_mask};
-            available_ = id.index();
+                available_.index(),
+                static_cast<id_value_type>((id.version() + 1) & id_type::version_mask)};
+
+            available_ = id_type{id.index()};
         }
 
-        bool valid(id_type id) const noexcept {
+        [[nodiscard]] bool valid(id_type id) const noexcept {
             return id.index() < acquired_ids_.size()
                 && acquired_ids_[id.index()] == id;
         }
 
         [[nodiscard]] std::size_t alive() const noexcept {
             std::size_t result = acquired_ids_.size();
-            for ( auto i = available_; i != id_type::index_mask; --result ) {
+            for ( auto i = available_.index(); i != id_type::index_mask; --result ) {
                 i = acquired_ids_[i].index();
             }
             return result;
         }
     private:
         std::vector<id_type> acquired_ids_;
-        id_value_type available_{id_type::index_mask};
+        id_type available_{id_type::index_mask};
     };
 }
 

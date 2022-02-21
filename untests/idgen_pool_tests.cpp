@@ -56,7 +56,7 @@ TEST_CASE("idgen_pool")
                 REQUIRE(p.valid(id));
             }
 
-            REQUIRE_THROWS_AS(p.acquire(), std::logic_error);
+            REQUIRE_THROWS_AS(std::ignore = p.acquire(), std::logic_error);
 
             for ( id8 id : ids ) {
                 p.release(id);
@@ -77,7 +77,24 @@ TEST_CASE("idgen_pool")
                 REQUIRE(p.valid(id));
             }
 
-            REQUIRE_THROWS_AS(p.acquire(), std::logic_error);
+            REQUIRE_THROWS_AS(std::ignore = p.acquire(), std::logic_error);
+        }
+        {
+            id8_pool p;
+
+            for ( id8::value_type i = 0; i < 8; ++i ) {
+                auto id = p.acquire();
+                p.release(id);
+                REQUIRE(id.index() == 0);
+                REQUIRE(id.version() == i);
+            }
+
+            for ( id8::value_type i = 0; i < 8; ++i ) {
+                auto id = p.acquire();
+                p.release(id);
+                REQUIRE(id.index() == 0);
+                REQUIRE(id.version() == i);
+            }
         }
     }
 
